@@ -107,9 +107,12 @@
       PropositionView.prototype.tagName = 'li';
 
       PropositionView.prototype.render = function() {
-        var name;
+        var abstain_votes, agree_votes, disagree_votes, name;
         name = this.model.get('name');
-        $(this.el).html(name);
+        agree_votes = this.model.get('agree_votes');
+        abstain_votes = this.model.get('abstain_votes');
+        disagree_votes = this.model.get('disagree_votes');
+        $(this.el).html(name + " agree:" + agree_votes + " disagree:" + disagree_votes + " abstained:" + abstain_votes);
         return this.el;
       };
 

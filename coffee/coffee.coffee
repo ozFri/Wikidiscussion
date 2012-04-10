@@ -3,11 +3,14 @@ $(document).ready ->
 
     events:
       "keypress #new-todo": "createOnEnter"
-
+    
     createOnEnter: (event) ->
       return if event.keyCode != 13
       Propositions.create name: @input.val()
       $('#new-todo').val ''
+    
+    
+
 
     initialize: ->
       @input = @$('#new-todo')
@@ -52,7 +55,10 @@ $(document).ready ->
 
     render: ->
       name = @model.get('name')
-      $(@el).html(name)
+      agree_votes = @model.get('agree_votes')
+      abstain_votes = @model.get('abstain_votes')
+      disagree_votes = @model.get('disagree_votes')
+      $(@el).html(name + " agree:" + agree_votes + " disagree:" + disagree_votes + " abstained:" + abstain_votes)
       @el
 
   App = new AppView(el: $('#content'))
