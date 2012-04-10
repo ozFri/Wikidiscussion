@@ -1,0 +1,7 @@
+sm_app_name: wikidiscussion
+sm_client_name: ozfraier
+html5: true
+ 
+development:
+  key: a4897487-195c-4df0-b53d-7927c77008d9
+  secret: c656159e-60b0-4af2-bce5-e04b293ad40a
