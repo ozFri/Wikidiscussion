@@ -31,7 +31,7 @@
         this.input = this.$('#new-todo');
         Propositions.bind('add', this.addOne);
         Propositions.bind('refresh', this.addAll);
-        return Todos.fetch();
+        return Propositions.fetch();
       };
 
       AppView.prototype.addOne = function(todo) {
@@ -43,7 +43,7 @@
       };
 
       AppView.prototype.addAll = function() {
-        return Todos.each(this.addOne);
+        return Propositions.each(this.addOne);
       };
 
       return AppView;
@@ -112,7 +112,7 @@
         agree_votes = this.model.get('agree_votes');
         abstain_votes = this.model.get('abstain_votes');
         disagree_votes = this.model.get('disagree_votes');
-        $(this.el).html(name + "&nbsp;&nbsp;<|>&nbsp;&nbsp; agree:" + agree_votes + " disagree:" + disagree_votes + " abstained:" + abstain_votes + "<button id = agree>agree</button>" + "<button id = disagree>disagree</button>" + "<button id = abstain>abstain</button>" + "<div>         <input id=\"positive\" placeholder=\"Enter reinforcing proposition\" type=\"text\" />         <input id=\"negative\" placeholder=\"Enter refuting proposition\" type=\"text\" />        </div>");
+        $(this.el).html(name + "&nbsp;&nbsp;<|>&nbsp;&nbsp; agree:" + agree_votes + " disagree:" + disagree_votes + " abstained:" + abstain_votes + "<button id = agree>agree</button>" + "<button id = disagree>disagree</button>" + "<button id = abstain>abstain</button>" + "<div><input id=\"positive\" placeholder=\"Enter reinforcing proposition\" type=\"text\" /><input id=\"negative\" placeholder=\"Enter refuting proposition\" type=\"text\" /></div>");
         return this.el;
       };
 
