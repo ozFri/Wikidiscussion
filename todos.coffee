@@ -110,7 +110,7 @@ $ ->
         # Re-render the contents of the todo item.
         render: =>
             agree_votes = @model.get('agree_votes')
-            this.$(@el).html( @template(@model.toJSON()) + agree_votes)
+            this.$(@el).html( @template(@model.toJSON()) + " agree votes: " + agree_votes)
             @setContent()
             return this
 

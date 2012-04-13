@@ -132,7 +132,7 @@
       PropositionView.prototype.render = function() {
         var agree_votes;
         agree_votes = this.model.get('agree_votes');
-        this.$(this.el).html(this.template(this.model.toJSON()) + agree_votes);
+        this.$(this.el).html(this.template(this.model.toJSON()) + " agree votes: " + agree_votes);
         this.setContent();
         return this;
       };
