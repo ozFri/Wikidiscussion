@@ -25,15 +25,19 @@
         positive: []
       };
 
-      Proposition.prototype.vote = function() {
-        if ("agree") {
+      Proposition.prototype.vote = function(vote_type) {
+        if (vote_type === "agree") {
           return this.save({
-            agree_votes: 1
+            agree_votes: this.get("agree_votes") + 1
           });
-        } else if ("disagree") {
-          return this.disagree_votes += 1;
-        } else if ("abstain") {
-          return this.abstain_votes += 1;
+        } else if (vote_type === "disagree") {
+          return this.save({
+            disagree_votes: this.get("disagree_votes") + 1
+          });
+        } else if (vote_type === "abstain") {
+          return this.save({
+            abstain_votes: this.get("abstain_votes") + 1
+          });
         }
       };
 
@@ -106,6 +110,9 @@
 
       function PropositionView() {
         this.updateOnEnter = __bind(this.updateOnEnter, this);
+        this.voteAbstained = __bind(this.voteAbstained, this);
+        this.voteDisagree = __bind(this.voteDisagree, this);
+        this.voteAgree = __bind(this.voteAgree, this);
         this.close = __bind(this.close, this);
         this.edit = __bind(this.edit, this);
         this.render = __bind(this.render, this);
@@ -121,7 +128,9 @@
         "dblclick div.todo-content": "edit",
         "click span.todo-destroy": "clear",
         "keypress .todo-input": "updateOnEnter",
-        "click div.agree": "voteAgree"
+        "click .agree": "voteAgree",
+        "click .disagree": "voteDisagree",
+        "click .abstained": "voteAbstained"
       };
 
       PropositionView.prototype.initialize = function() {
@@ -130,15 +139,13 @@
       };
 
       PropositionView.prototype.render = function() {
-        var agree_votes;
+        var abstain_votes, agree_votes, disagree_votes;
         agree_votes = this.model.get('agree_votes');
-        this.$(this.el).html(this.template(this.model.toJSON()) + " agree votes: " + agree_votes);
+        disagree_votes = this.model.get('disagree_votes');
+        abstain_votes = this.model.get('abstain_votes');
+        this.$(this.el).html(this.template(this.model.toJSON()) + " agree votes: " + agree_votes + " disagree votes: " + disagree_votes + " abstain votes: " + abstain_votes);
         this.setContent();
         return this;
-      };
-
-      PropositionView.prototype.voteAgree = function() {
-        return this.model.vote(agree);
       };
 
       PropositionView.prototype.setContent = function() {
@@ -164,6 +171,18 @@
           content: this.input.val()
         });
         return $(this.el).removeClass("editing");
+      };
+
+      PropositionView.prototype.voteAgree = function() {
+        return this.model.vote("agree");
+      };
+
+      PropositionView.prototype.voteDisagree = function() {
+        return this.model.vote("disagree");
+      };
+
+      PropositionView.prototype.voteAbstained = function() {
+        return this.model.vote("abstain");
       };
 
       PropositionView.prototype.updateOnEnter = function(e) {

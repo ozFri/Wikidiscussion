@@ -19,7 +19,7 @@
     <div id="todoapp">
 
       <div class="title">
-        <h1>Todos</h1>
+        <h1>Wikidiscussion</h1>
         <h3>in CoffeeScript</h3>
       </div>
 
@@ -64,11 +64,9 @@
           <input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
           <div class="todo-content"></div>
           <span class="todo-destroy"></span>
-          <div class="votes"></div>
-          <div class= "buttons">
            <div class= "agree"><button style="background-color:lightgreen">agree</button> </div>
-           <button style="background-color:salmon">disagree</button>
-           <button style="background-color:lightyellow">abstain</button> </div>
+           <div class= "disagree"><button style="background-color:salmon">disagree</button></div>
+           <div class= "abstained"><button style="background-color:lightyellow">abstain</button> </div>
           <div class= "negative-list"> <input class="negative" type="text" placeholder="enter refuting proposition" />
           <div class= "negative-list"> <input class="positive" type="text" placeholder="enter supporting propositon"
         </div>

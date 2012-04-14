@@ -24,13 +24,13 @@ $ ->
             negative: []
             positive: []
 
-        vote: ->
-          if "agree"
-            @save ({ agree_votes: 1})
-          else if "disagree"
-            @disagree_votes += 1
-          else if "abstain"
-            @abstain_votes += 1
+        vote: (vote_type) ->
+          if vote_type is "agree" 
+            @save (agree_votes: @get("agree_votes") + 1) 
+          else if vote_type is "disagree"
+            @save (disagree_votes: @get("disagree_votes") + 1)
+          else if vote_type is "abstain"
+            @save (abstain_votes: @get("abstain_votes") + 1)
 
 
         # Ensure that each todo created has `content`.
@@ -98,7 +98,9 @@ $ ->
             "dblclick div.todo-content" : "edit",
             "click span.todo-destroy"   : "clear",
             "keypress .todo-input"      : "updateOnEnter"
-            "click div.agree"           : "voteAgree"
+            "click .agree"              : "voteAgree"
+            "click .disagree"           : "voteDisagree"
+            "click .abstained"          : "voteAbstained"
 
         # The TodoView listens for changes to its model, re-rendering. Since there's
         # a one-to-one correspondence between a **Todo** and a **TodoView** in this
@@ -110,12 +112,12 @@ $ ->
         # Re-render the contents of the todo item.
         render: =>
             agree_votes = @model.get('agree_votes')
-            this.$(@el).html( @template(@model.toJSON()) + " agree votes: " + agree_votes)
+            disagree_votes = @model.get('disagree_votes')
+            abstain_votes = @model.get('abstain_votes')
+            this.$(@el).html( @template(@model.toJSON()) + " agree votes: " + agree_votes + " disagree votes: " + disagree_votes + " abstain votes: " + abstain_votes)
             @setContent()
             return this
 
-        voteAgree: ->
-           @model.vote(agree)
 
         # To avoid XSS (not that it would be harmful in this particular app),
         # we use `jQuery.text` to set the contents of the todo item.
@@ -139,6 +141,16 @@ $ ->
         close: =>
             @model.save({ content: @input.val() })
             $(@el).removeClass("editing")
+
+        voteAgree: =>
+            @model.vote("agree")
+
+        voteDisagree: =>
+            @model.vote("disagree")
+
+        voteAbstained: =>
+            @model.vote("abstain")
+
 
         # If you hit `enter`, we're through editing the item.
         updateOnEnter: (e) =>
@@ -169,6 +181,7 @@ $ ->
             "keypress #new-todo"  : "createOnEnter",
             "keyup #new-todo"     : "showTooltip",
             "click .todo-clear a" : "clearCompleted"
+
 
         # At initialization we bind to the relevant events on the `Todos`
         # collection, when items are added or changed. Kick things off by
