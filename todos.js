@@ -22,7 +22,8 @@
         disagree_votes: 0,
         abstain_votes: 0,
         negative: [],
-        positive: []
+        positive: [],
+        i: 1
       };
 
       Proposition.prototype.vote = function(vote_type) {
@@ -58,6 +59,18 @@
       Proposition.prototype.clear = function() {
         this.destroy();
         return this.view.remove();
+      };
+
+      Proposition.prototype.savepos = function(el) {
+        return this.save({
+          positive: this.get('positive') + el
+        });
+      };
+
+      Proposition.prototype.saveneg = function(el) {
+        return this.save({
+          negative: this.get('negative') + el
+        });
       };
 
       return Proposition;
@@ -109,6 +122,8 @@
       __extends(PropositionView, _super);
 
       function PropositionView() {
+        this.pushNegOnEnter = __bind(this.pushNegOnEnter, this);
+        this.pushPosOnEnter = __bind(this.pushPosOnEnter, this);
         this.updateOnEnter = __bind(this.updateOnEnter, this);
         this.voteAbstained = __bind(this.voteAbstained, this);
         this.voteDisagree = __bind(this.voteDisagree, this);
@@ -130,7 +145,9 @@
         "keypress .todo-input": "updateOnEnter",
         "click .agree": "voteAgree",
         "click .disagree": "voteDisagree",
-        "click .abstained": "voteAbstained"
+        "click .abstained": "voteAbstained",
+        "keypress .positive": "pushPosOnEnter",
+        "keypress .negative": "pushNegOnEnter"
       };
 
       PropositionView.prototype.initialize = function() {
@@ -139,11 +156,13 @@
       };
 
       PropositionView.prototype.render = function() {
-        var abstain_votes, agree_votes, disagree_votes;
+        var abstain_votes, agree_votes, disagree_votes, negativelist, positivelist;
+        positivelist = "<ul>" + this.model.get('positive') + "</ul>";
+        negativelist = "<ul>" + this.model.get('negative') + "</ul>";
         agree_votes = this.model.get('agree_votes');
         disagree_votes = this.model.get('disagree_votes');
         abstain_votes = this.model.get('abstain_votes');
-        this.$(this.el).html(this.template(this.model.toJSON()) + " agree votes: " + agree_votes + " disagree votes: " + disagree_votes + " abstain votes: " + abstain_votes);
+        this.$(this.el).html(this.template(this.model.toJSON()) + " agree votes: " + agree_votes + " disagree votes: " + disagree_votes + " abstain votes: " + abstain_votes + "<ul>supporting propositions:</ul>" + positivelist + "<ul>opposing propositions:</ul>" + negativelist);
         this.setContent();
         return this;
       };
@@ -154,7 +173,11 @@
         this.$(".todo-content").text(content);
         this.input = this.$(".todo-input");
         this.input.bind("blur", this.close);
-        return this.input.val(content);
+        this.input.val(content);
+        this.inputp = this.$(".positive");
+        this.inputp.bind("blur", this.pushPosOnEnter);
+        this.inputn = this.$(".negative");
+        return this.inputn.bind("blur", this.pushNegOnEnter);
       };
 
       PropositionView.prototype.toggleDone = function() {
@@ -187,6 +210,18 @@
 
       PropositionView.prototype.updateOnEnter = function(e) {
         if (e.keyCode === 13) return this.close();
+      };
+
+      PropositionView.prototype.pushPosOnEnter = function(e) {
+        if (e.keyCode !== 13) return;
+        this.model.savepos(this.inputp.val());
+        return this.inputp.val('');
+      };
+
+      PropositionView.prototype.pushNegOnEnter = function(e) {
+        if (e.keyCode !== 13) return;
+        this.model.saveneg(this.inputn.val());
+        return this.inputn.val('');
       };
 
       PropositionView.prototype.remove = function() {

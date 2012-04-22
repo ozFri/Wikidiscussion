@@ -2,14 +2,14 @@
 # [Jérôme Gravel-Niquet](http://jgn.me/). This demo uses a simple
 # [LocalStorage adapter](backbone-localstorage.html)
 # to persist Backbone models within your browser.
-# 
+#
 # This [CoffeeScript](http://jashkenas.github.com/coffee-script/) variation has been provided by [Jason Giedymin](http://jasongiedymin.com/).
 #
 # Note: two things you will notice with my CoffeeScript are that I prefer to
 # use four space indents and prefer to use `()` for all functions.
 
 # Load the application once the DOM is ready, using a `jQuery.ready` shortcut.
-$ ->    
+$ ->
     ### Todo Model ###
 
     # Our basic **Todo** model has `content`, `order`, and `done` attributes.
@@ -23,15 +23,14 @@ $ ->
             abstain_votes: 0
             negative: []
             positive: []
-
+            i: 1
         vote: (vote_type) ->
-          if vote_type is "agree" 
-            @save (agree_votes: @get("agree_votes") + 1) 
+          if vote_type is "agree"
+            @save (agree_votes: @get("agree_votes") + 1)
           else if vote_type is "disagree"
             @save (disagree_votes: @get("disagree_votes") + 1)
           else if vote_type is "abstain"
             @save (abstain_votes: @get("abstain_votes") + 1)
-
 
         # Ensure that each todo created has `content`.
         initialize: ->
@@ -47,6 +46,11 @@ $ ->
             @destroy()
             @view.remove()
 
+        savepos: (el) ->
+           @save (positive: @get('positive') + el)
+
+        saveneg: (el) ->
+           @save (negative: @get('negative') + el)
     ### Todo Collection ###
 
     # The collection of todos is backed by *localStorage* instead of a remote
@@ -84,23 +88,28 @@ $ ->
     ### Todo Item View ###
 
     # The DOM element for a todo item...
+
+    
+
     class PropositionView extends Backbone.View
 
         #... is a list tag.
-        tagName:  "li"
+        tagName: "li"
 
         # Cache the template function for a single item.
         template: _.template( $("#item-template").html() )
 
         # The DOM events specific to an item.
         events:
-            "click .check"              : "toggleDone",
+            "click .check" : "toggleDone",
             "dblclick div.todo-content" : "edit",
             "click span.todo-destroy"   : "clear",
-            "keypress .todo-input"      : "updateOnEnter"
-            "click .agree"              : "voteAgree"
-            "click .disagree"           : "voteDisagree"
-            "click .abstained"          : "voteAbstained"
+            "keypress .todo-input" : "updateOnEnter"
+            "click .agree" : "voteAgree"
+            "click .disagree" : "voteDisagree"
+            "click .abstained" : "voteAbstained"
+            "keypress .positive"    : "pushPosOnEnter"
+            "keypress .negative"    : "pushNegOnEnter"
 
         # The TodoView listens for changes to its model, re-rendering. Since there's
         # a one-to-one correspondence between a **Todo** and a **TodoView** in this
@@ -111,12 +120,15 @@ $ ->
 
         # Re-render the contents of the todo item.
         render: =>
+            positivelist = "<ul>" + @model.get('positive') + "</ul>"
+            negativelist = "<ul>" + @model.get('negative') + "</ul>"
             agree_votes = @model.get('agree_votes')
             disagree_votes = @model.get('disagree_votes')
             abstain_votes = @model.get('abstain_votes')
-            this.$(@el).html( @template(@model.toJSON()) + " agree votes: " + agree_votes + " disagree votes: " + disagree_votes + " abstain votes: " + abstain_votes)
+            this.$(@el).html( @template(@model.toJSON()) + " agree votes: " + agree_votes + " disagree votes: " + disagree_votes + " abstain votes: " + abstain_votes + "<ul>supporting propositions:</ul>" + positivelist + "<ul>opposing propositions:</ul>" + negativelist )
             @setContent()
             return this
+
 
 
         # To avoid XSS (not that it would be harmful in this particular app),
@@ -127,7 +139,10 @@ $ ->
             @input = this.$(".todo-input");
             @input.bind("blur", @close);
             @input.val(content);
-
+            @inputp = this.$(".positive";)
+            @inputp.bind("blur", @pushPosOnEnter);
+            @inputn = this.$(".negative";)
+            @inputn.bind("blur", @pushNegOnEnter);
         # Toggle the `"done"` state of the model.
         toggleDone: ->
             @model.toggle()
@@ -156,7 +171,20 @@ $ ->
         updateOnEnter: (e) =>
             @close() if e.keyCode is 13
 
-        # Remove this view from the DOM.
+        pushPosOnEnter: (e) =>
+            if e.keyCode != 13 
+               return
+            @model.savepos (@inputp.val()) 
+            @inputp.val('')
+      #      alert ((i) for i in @model.get ("positive"))
+    
+        pushNegOnEnter: (e) =>
+            if e.keyCode != 13 
+               return
+            @model.saveneg (@inputn.val()) 
+            @inputn.val('')
+     #       alert ((i) for i in @model.get ("negative"))
+     # Remove this view from the DOM.
         remove: ->
             $(@el).remove()
 
@@ -178,9 +206,10 @@ $ ->
 
         # Delegated events for creating new items, and clearing completed ones.
         events:
-            "keypress #new-todo"  : "createOnEnter",
-            "keyup #new-todo"     : "showTooltip",
-            "click .todo-clear a" : "clearCompleted"
+            "keypress #new-todo" : "createOnEnter",
+            "keyup #new-todo" : "showTooltip",
+            "click .todo-clear a" : "clearCompleted" ,
+
 
 
         # At initialization we bind to the relevant events on the `Todos`
@@ -199,9 +228,9 @@ $ ->
         # of the app doesn't change.
         render: =>
             this.$('#todo-stats').html( @statsTemplate({
-                total:      Propositions.length,
-                done:       Propositions.done().length,
-                remaining:  Propositions.remaining().length
+                total: Propositions.length,
+                done: Propositions.done().length,
+                remaining: Propositions.remaining().length
             }))
 
         # Add a single todo item to the list by creating a view for it, and
@@ -218,8 +247,8 @@ $ ->
         newAttributes: ->
             return {
                 content: @input.val(),
-                order:   Propositions.nextOrder(),
-                done:    false
+                order: Propositions.nextOrder(),
+                done: false
             }
 
         # If you hit return in the main input field, create new **Todo** model,
@@ -254,4 +283,5 @@ $ ->
     # Original documentation has been left intact.
     Propositions = new PropositionList
     App = new AppView()
+
 
