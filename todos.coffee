@@ -23,7 +23,7 @@ $ ->
             abstain_votes: 0
             negative: []
             positive: []
-            i: 1
+   #         i: 1
         vote: (vote_type) ->
           if vote_type is "agree"
             @save (agree_votes: @get("agree_votes") + 1)
@@ -110,22 +110,25 @@ $ ->
             "click .abstained" : "voteAbstained"
             "keypress .positive"    : "pushPosOnEnter"
             "keypress .negative"    : "pushNegOnEnter"
-
+#            "keypress .positive" : "createOnEnterP" ,
+#            "keypress .negative" : "createOnEnterN"
         # The TodoView listens for changes to its model, re-rendering. Since there's
         # a one-to-one correspondence between a **Todo** and a **TodoView** in this
         # app, we set a direct reference on the model for convenience.
         initialize: ->
             @model.bind('change', this.render);
             @model.view = this;
-
+            @inputp = this.$(".positive")
+            @inputn = this.$(".negative")
         # Re-render the contents of the todo item.
         render: =>
+            content = "<div id=" + @model.get('content') + "></div>"
             positivelist = "<ul>" + @model.get('positive') + "</ul>"
             negativelist = "<ul>" + @model.get('negative') + "</ul>"
             agree_votes = @model.get('agree_votes')
             disagree_votes = @model.get('disagree_votes')
             abstain_votes = @model.get('abstain_votes')
-            this.$(@el).html( @template(@model.toJSON()) + " agree votes: " + agree_votes + " disagree votes: " + disagree_votes + " abstain votes: " + abstain_votes + "<ul>supporting propositions:</ul>" + positivelist + "<ul>opposing propositions:</ul>" + negativelist )
+            this.$(@el).html( content + @template(@model.toJSON()) + " agree votes: " + agree_votes + " disagree votes: " + disagree_votes + " abstain votes: " + abstain_votes + "<ul>supporting propositions:</ul>" + positivelist + "<ul>opposing propositions:</ul>" + negativelist )
             @setContent()
             return this
 
@@ -174,15 +177,18 @@ $ ->
         pushPosOnEnter: (e) =>
             if e.keyCode != 13 
                return
-            @model.savepos (@inputp.val()) 
+            Propositions.create( @newAttributesP() ) 
+            @model.savepos ("<a href =\"#" + @inputp.val() + "\"><ul>" + @inputp.val() + "</a></ul>") 
             @inputp.val('')
       #      alert ((i) for i in @model.get ("positive"))
-    
+              
         pushNegOnEnter: (e) =>
             if e.keyCode != 13 
                return
-            @model.saveneg (@inputn.val()) 
+            Propositions.create( @newAttributesN() )
+            @model.saveneg ("<a href=\"#" + @inputn.val() + "\"><ul>" + @inputn.val() + "</a></ul>") 
             @inputn.val('')
+            
      #       alert ((i) for i in @model.get ("negative"))
      # Remove this view from the DOM.
         remove: ->
@@ -192,6 +198,31 @@ $ ->
         clear: () ->
             @model.clear()
 
+
+#        createOnEnterP: (e) ->
+#            return if (e.keyCode != 13)
+
+
+#        createOnEnterN: (e) ->
+#            return if (e.keyCode != 13)
+
+        
+       
+        newAttributesP: ->
+ #that was added to observe @inputp           alert @inputp.get("val()")
+            return {
+                content: @inputp.val(),
+                order: Propositions.nextOrder(),
+                done: false
+            }
+
+        newAttributesN: ->
+            return {
+                content: @inputn.val(),
+                order: Propositions.nextOrder(),
+                done: false
+            }
+
     ### The Application ###
 
     # Our overall **AppView** is the top-level piece of UI.
@@ -199,7 +230,8 @@ $ ->
         # Instead of generating a new element, bind to the existing skeleton of
         # the App already present in the HTML.
         el_tag = "#todoapp"
-        el: $(el_tag)
+        el: $(el_tag)        
+
 
         # Our template for the line of statistics at the bottom of the app.
         statsTemplate: _.template( $("#stats-template").html() )
@@ -215,7 +247,7 @@ $ ->
         # At initialization we bind to the relevant events on the `Todos`
         # collection, when items are added or changed. Kick things off by
         # loading any preexisting todos that might be saved in *localStorage*.
-        initialize: =>
+        initialize: ->
             @input = this.$("#new-todo")
 
             Propositions.bind("add", @addOne)
@@ -257,6 +289,8 @@ $ ->
             return if (e.keyCode != 13)
             Propositions.create( @newAttributes() )
             @input.val('')
+
+
 
         # Clear all done todo items, destroying their models.
         clearCompleted: ->

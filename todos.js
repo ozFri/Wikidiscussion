@@ -22,8 +22,7 @@
         disagree_votes: 0,
         abstain_votes: 0,
         negative: [],
-        positive: [],
-        i: 1
+        positive: []
       };
 
       Proposition.prototype.vote = function(vote_type) {
@@ -152,17 +151,20 @@
 
       PropositionView.prototype.initialize = function() {
         this.model.bind('change', this.render);
-        return this.model.view = this;
+        this.model.view = this;
+        this.inputp = this.$(".positive");
+        return this.inputn = this.$(".negative");
       };
 
       PropositionView.prototype.render = function() {
-        var abstain_votes, agree_votes, disagree_votes, negativelist, positivelist;
+        var abstain_votes, agree_votes, content, disagree_votes, negativelist, positivelist;
+        content = "<div id=" + this.model.get('content') + "></div>";
         positivelist = "<ul>" + this.model.get('positive') + "</ul>";
         negativelist = "<ul>" + this.model.get('negative') + "</ul>";
         agree_votes = this.model.get('agree_votes');
         disagree_votes = this.model.get('disagree_votes');
         abstain_votes = this.model.get('abstain_votes');
-        this.$(this.el).html(this.template(this.model.toJSON()) + " agree votes: " + agree_votes + " disagree votes: " + disagree_votes + " abstain votes: " + abstain_votes + "<ul>supporting propositions:</ul>" + positivelist + "<ul>opposing propositions:</ul>" + negativelist);
+        this.$(this.el).html(content + this.template(this.model.toJSON()) + " agree votes: " + agree_votes + " disagree votes: " + disagree_votes + " abstain votes: " + abstain_votes + "<ul>supporting propositions:</ul>" + positivelist + "<ul>opposing propositions:</ul>" + negativelist);
         this.setContent();
         return this;
       };
@@ -214,13 +216,15 @@
 
       PropositionView.prototype.pushPosOnEnter = function(e) {
         if (e.keyCode !== 13) return;
-        this.model.savepos(this.inputp.val());
+        Propositions.create(this.newAttributesP());
+        this.model.savepos("<a href =\"#" + this.inputp.val() + "\"><ul>" + this.inputp.val() + "</a></ul>");
         return this.inputp.val('');
       };
 
       PropositionView.prototype.pushNegOnEnter = function(e) {
         if (e.keyCode !== 13) return;
-        this.model.saveneg(this.inputn.val());
+        Propositions.create(this.newAttributesN());
+        this.model.saveneg("<a href=\"#" + this.inputn.val() + "\"><ul>" + this.inputn.val() + "</a></ul>");
         return this.inputn.val('');
       };
 
@@ -230,6 +234,22 @@
 
       PropositionView.prototype.clear = function() {
         return this.model.clear();
+      };
+
+      PropositionView.prototype.newAttributesP = function() {
+        return {
+          content: this.inputp.val(),
+          order: Propositions.nextOrder(),
+          done: false
+        };
+      };
+
+      PropositionView.prototype.newAttributesN = function() {
+        return {
+          content: this.inputn.val(),
+          order: Propositions.nextOrder(),
+          done: false
+        };
       };
 
       return PropositionView;
@@ -246,7 +266,6 @@
         this.addAll = __bind(this.addAll, this);
         this.addOne = __bind(this.addOne, this);
         this.render = __bind(this.render, this);
-        this.initialize = __bind(this.initialize, this);
         AppView.__super__.constructor.apply(this, arguments);
       }
 
