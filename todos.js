@@ -74,7 +74,7 @@
 
       return Proposition;
 
-    })(Backbone.Model);
+    })(StackMob.Model);
     /* Todo Collection
     */
     PropositionList = (function(_super) {
@@ -113,7 +113,7 @@
 
       return PropositionList;
 
-    })(Backbone.Collection);
+    })(StackMob.Collection);
     /* Todo Item View
     */
     PropositionView = (function(_super) {
@@ -254,7 +254,7 @@
 
       return PropositionView;
 
-    })(Backbone.View);
+    })(StackMob.View);
     /* The Application
     */
     AppView = (function(_super) {
@@ -345,7 +345,7 @@
 
       return AppView;
 
-    })(Backbone.View);
+    })(StackMob.View);
     Propositions = new PropositionList;
     return App = new AppView();
   });
