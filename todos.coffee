@@ -13,7 +13,7 @@ $ ->
     ### Todo Model ###
 
     # Our basic **Todo** model has `content`, `order`, and `done` attributes.
-    class Proposition extends StackMob.Model
+    class Proposition extends Backbone.Model
         # Default attributes for the todo.
         defaults:
             content: "empty todo..."
@@ -55,7 +55,7 @@ $ ->
 
     # The collection of todos is backed by *localStorage* instead of a remote
     # server.
-    class PropositionList extends StackMob.Collection
+    class PropositionList extends Backbone.Collection
 
         # Reference to this collection's model.
         model: Proposition
@@ -91,7 +91,7 @@ $ ->
 
     
 
-    class PropositionView extends StackMob.View
+    class PropositionView extends Backbone.View
 
         #... is a list tag.
         tagName: "li"
@@ -226,7 +226,7 @@ $ ->
     ### The Application ###
 
     # Our overall **AppView** is the top-level piece of UI.
-    class AppView extends StackMob.View
+    class AppView extends Backbone.View
         # Instead of generating a new element, bind to the existing skeleton of
         # the App already present in the HTML.
         el_tag = "#todoapp"
