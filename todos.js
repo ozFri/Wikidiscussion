@@ -254,7 +254,7 @@
 
       return PropositionView;
 
-    })(StackMob.View);
+    })(Backbone.View);
     /* The Application
     */
     AppView = (function(_super) {
@@ -345,7 +345,7 @@
 
       return AppView;
 
-    })(Backbone.View);
+    })(StackMob.View);
     Propositions = new PropositionList;
     return App = new AppView();
   });
