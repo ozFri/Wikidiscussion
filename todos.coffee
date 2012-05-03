@@ -6,14 +6,14 @@
 # This [CoffeeScript](http://jashkenas.github.com/coffee-script/) variation has been provided by [Jason Giedymin](http://jasongiedymin.com/).
 #
 # Note: two things you will notice with my CoffeeScript are that I prefer to
-# use four space indents and prefer to use `()` for all functions.
+# use four space inde:nts and prefer to use `()` for all functions.
 
 # Load the application once the DOM is ready, using a `jQuery.ready` shortcut.
 $ ->
     ### Todo Model ###
 
     # Our basic **Todo** model has `content`, `order`, and `done` attributes.
-    class Proposition extends Backbone.Model
+    class Proposition extends StackMob.Model
         # Default attributes for the todo.
         defaults:
             content: "empty todo..."
@@ -55,7 +55,7 @@ $ ->
 
     # The collection of todos is backed by *localStorage* instead of a remote
     # server.
-    class PropositionList extends Backbone.Collection
+    class PropositionList extends StackMob.Collection
 
         # Reference to this collection's model.
         model: Proposition

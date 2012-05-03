@@ -1,5 +1,36 @@
 <!DOCTYPE html>
 <html>
+<head>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://static.stackmob.com/js/json2-min.js"></script>
+<script type="text/javascript" src="http://static.stackmob.com/js/underscore-1.3.0-min.js"></script>
+<script type="text/javascript" src="http://static.stackmob.com/js/backbone-0.5.3-min.js"></script>
+<script type="text/javascript" src="http://static.stackmob.com/js/stackmob-js-0.1.1-min.js"></script>
+ 
+<script type="text/javascript">
+/* <![CDATA[ */
+  //Remember to initialize StackMob before you use other StackMob functionality.
+    StackMob.init({
+        appName: 'wikidiscussion', //find this at https://www.stackmob.com/platform/account/apps/reset
+    clientSubdomain: 'ozfraier',
+    apiVersion: 0
+  });
+/* ]]> */
+</script>
+ 
+</head>
+<body>
+ 
+ 
+<script type="text/javascript">
+  //your code goes here (or an external file if you choose)
+</script>
+ 
+</body>
+</html>
+
+<!DOCTYPE html>
+<html>
 
   <head>
     <title>Backbone Demo: Todos in CoffeeScript</title>
@@ -10,20 +41,7 @@
     <script src="lib/backbone.js"></script>
     <script src="lib/backbone-localstorage.js"></script>
     <script src="todos.js"></script>
-    <script type="text/javascript" src="http://static.stackmob.com/js/stackmob-js-0.1.1-min.js"></script>
-
-    <script type="text/javascript">
-    /* <![CDATA[ */
-        Backbone.init({
-            appName: 'wikidiscussion',
-        clientSubdomain: 'ozfraier',
-        apiVersion: 0
-      });
-    /* ]]> */
-    </script>
   </head>
-  <body
-   </head>
 
   <body>
 
@@ -36,7 +54,7 @@
         <h3>in CoffeeScript</h3>
       </div>
 
-      <div class="content">
+      <div <class="content">
 
         <div id="create-todo">
           <input id="new-todo" placeholder="Enter proposition" type="text" />

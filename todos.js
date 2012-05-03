@@ -74,7 +74,7 @@
 
       return Proposition;
 
-    })(Backbone.Model);
+    })(StackMob.Model);
     /* Todo Collection
     */
     PropositionList = (function(_super) {
@@ -113,7 +113,7 @@
 
       return PropositionList;
 
-    })(Backbone.Collection);
+    })(StackMob.Collection);
     /* Todo Item View
     */
     PropositionView = (function(_super) {
