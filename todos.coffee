@@ -226,7 +226,7 @@ $ ->
     ### The Application ###
 
     # Our overall **AppView** is the top-level piece of UI.
-    class AppView extends StackMob.View
+    class AppView extends Backbone.View
         # Instead of generating a new element, bind to the existing skeleton of
         # the App already present in the HTML.
         el_tag = "#todoapp"
