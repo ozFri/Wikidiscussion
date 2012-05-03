@@ -345,7 +345,7 @@
 
       return AppView;
 
-    })(StackMob.View);
+    })(Backbone.View);
     Propositions = new PropositionList;
     return App = new AppView();
   });
