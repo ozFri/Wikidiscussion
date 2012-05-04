@@ -48,7 +48,9 @@ $ ->
 
         savepos: (el) ->
            @appendAndSave "positive", (@get('positive') + el)
+              success: (model) ->
 
+              error: (model, response) ->
         saveneg: (el) ->
            @save (negative: @get('negative') + el)
     ### Todo Collection ###
