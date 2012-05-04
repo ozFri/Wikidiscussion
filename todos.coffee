@@ -47,7 +47,7 @@ $ ->
             @view.remove()
 
         savepos: (el) ->
-           appendAndSave "positive", (@get('positive') + el)
+           @appendAndSave "positive", (@get('positive') + el)
 
         saveneg: (el) ->
            @save (negative: @get('negative') + el)
