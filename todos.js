@@ -61,16 +61,14 @@
       };
 
       Proposition.prototype.savepos = function(el) {
-        return this.appendAndSave("positive", (this.get('positive') + el)({
+        return this.positive.appendAndSave((this.get('positive') + el)({
           success: function(model) {},
           error: function(model, response) {}
         }));
       };
 
       Proposition.prototype.saveneg = function(el) {
-        return this.save({
-          negative: this.get('negative') + el
-        });
+        return this.negative.save(this.get('negative') + el);
       };
 
       return Proposition;
