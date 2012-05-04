@@ -61,7 +61,7 @@
       };
 
       Proposition.prototype.savepos = function(el) {
-        return this.save({
+        return this.appendAndSave({
           positive: this.get('positive') + el
         });
       };
