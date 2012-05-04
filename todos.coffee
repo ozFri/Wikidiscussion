@@ -47,12 +47,12 @@ $ ->
             @view.remove()
 
         savepos: (el) ->
-           @positive.appendAndSave (@get('positive') + el)
+           @appendAndSave "positive", (@get('positive') + el)
               success: (model) ->
 
               error: (model, response) ->
         saveneg: (el) ->
-           @negative.save (@get('negative') + el)
+           @appendAndSave negative , el
     ### Todo Collection ###
 
     # The collection of todos is backed by *localStorage* instead of a remote
