@@ -62,7 +62,7 @@
 
       Proposition.prototype.savepos = function(el) {
         var a;
-        a = _(this.get('positive')).clone();
+        a = this.get('positive');
         a.push(el);
         return this.save({
           positive: a
