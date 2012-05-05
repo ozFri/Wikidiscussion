@@ -47,7 +47,7 @@ $ ->
             @view.remove()
 
         savepos: (el) ->
-           @appendAndSave positive , el
+           @save (positive: @get('negative') + el)
 
         saveneg: (el) ->
            @save (negative: @get('negative') + el)
@@ -174,7 +174,7 @@ $ ->
         updateOnEnter: (e) =>
             @close() if e.keyCode is 13
 
-        pushPosOnEnter: (e) =>
+        pushPosOnEnter: (e) ->
             if e.keyCode != 13 
                return
             Propositions.create( @newAttributesP() ) 

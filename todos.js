@@ -61,7 +61,9 @@
       };
 
       Proposition.prototype.savepos = function(el) {
-        return this.appendAndSave(positive, el);
+        return this.save({
+          positive: this.get('negative') + el
+        });
       };
 
       Proposition.prototype.saveneg = function(el) {
@@ -118,7 +120,6 @@
 
       function PropositionView() {
         this.pushNegOnEnter = __bind(this.pushNegOnEnter, this);
-        this.pushPosOnEnter = __bind(this.pushPosOnEnter, this);
         this.updateOnEnter = __bind(this.updateOnEnter, this);
         this.voteAbstained = __bind(this.voteAbstained, this);
         this.voteDisagree = __bind(this.voteDisagree, this);
