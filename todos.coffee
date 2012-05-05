@@ -22,7 +22,7 @@ $ ->
             disagree_votes: 0
             abstain_votes: 0
             negative: ""
-            positive: ""
+            positive: []
    #         i: 1
         vote: (vote_type) ->
           if vote_type is "agree"
@@ -47,7 +47,7 @@ $ ->
             @view.remove()
 
         savepos: (el) ->
-           @appendAndSave positive , [el]
+           @appendAndSave positive , el
 
         saveneg: (el) ->
            @save (negative: @get('negative') + el)

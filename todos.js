@@ -22,7 +22,7 @@
         disagree_votes: 0,
         abstain_votes: 0,
         negative: "",
-        positive: ""
+        positive: []
       };
 
       Proposition.prototype.vote = function(vote_type) {
@@ -61,7 +61,7 @@
       };
 
       Proposition.prototype.savepos = function(el) {
-        return this.appendAndSave(positive, [el]);
+        return this.appendAndSave(positive, el);
       };
 
       Proposition.prototype.saveneg = function(el) {
