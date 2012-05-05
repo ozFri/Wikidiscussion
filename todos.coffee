@@ -61,7 +61,7 @@ $ ->
         model: Proposition
 
         # Save all of the todo items under the `"todos"` namespace.
-        localStorage: new Store("todos")
+ #       localStorage: new Store("todos")
 
         # Attribute getter/setter
         getDone = (todo) ->

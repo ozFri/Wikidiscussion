@@ -86,8 +86,6 @@
 
       PropositionList.prototype.model = Proposition;
 
-      PropositionList.prototype.localStorage = new Store("todos");
-
       getDone = function(todo) {
         return todo.get("done");
       };
