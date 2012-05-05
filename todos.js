@@ -21,7 +21,7 @@
         agree_votes: 0,
         disagree_votes: 0,
         abstain_votes: 0,
-        negative: "",
+        negative: [],
         positive: []
       };
 
