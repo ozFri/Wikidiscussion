@@ -21,8 +21,8 @@
         agree_votes: 0,
         disagree_votes: 0,
         abstain_votes: 0,
-        negative: [],
-        positive: []
+        negative: "",
+        positive: ""
       };
 
       Proposition.prototype.vote = function(vote_type) {
