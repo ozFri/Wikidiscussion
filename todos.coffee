@@ -53,7 +53,7 @@ $ ->
            
 
         saveneg: (el) ->
-           a = _(@get('negative')).clone()
+           a = (@get('negative'))
            a.push(el)
            @save(negative: a)
            
