@@ -47,10 +47,13 @@ $ ->
             @view.remove()
 
         savepos: (el) ->
-           @save (positive: @get('negative') + el)
+           @save (positive: @get('positive') + el)
 
         saveneg: (el) ->
-           @save (negative: @get('negative') + el)
+           a = _(@get('negative')).clone()
+           a.push(el)
+           @save(negative: a)
+           
     ### Todo Collection ###
 
     # The collection of todos is backed by *localStorage* instead of a remote

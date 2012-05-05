@@ -62,13 +62,16 @@
 
       Proposition.prototype.savepos = function(el) {
         return this.save({
-          positive: this.get('negative') + el
+          positive: this.get('positive') + el
         });
       };
 
       Proposition.prototype.saveneg = function(el) {
+        var a;
+        a = _(this.get('negative')).clone();
+        a.push(el);
         return this.save({
-          negative: this.get('negative') + el
+          negative: a
         });
       };
 
