@@ -61,8 +61,11 @@
       };
 
       Proposition.prototype.savepos = function(el) {
+        var a;
+        a = _(this.get('positive')).clone();
+        a.push(el);
         return this.save({
-          positive: this.get('positive') + el
+          positive: a
         });
       };
 

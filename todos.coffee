@@ -47,7 +47,10 @@ $ ->
             @view.remove()
 
         savepos: (el) ->
-           @save (positive: @get('positive') + el)
+           a = _(@get('positive')).clone()
+           a.push(el)
+           @save(positive: a)
+           
 
         saveneg: (el) ->
            a = _(@get('negative')).clone()
