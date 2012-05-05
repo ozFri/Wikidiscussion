@@ -21,8 +21,8 @@ $ ->
             agree_votes: 0
             disagree_votes: 0
             abstain_votes: 0
-            negative: []
-            positive: []
+            negative: ""
+            positive: ""
    #         i: 1
         vote: (vote_type) ->
           if vote_type is "agree"
