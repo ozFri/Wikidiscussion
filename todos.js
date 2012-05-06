@@ -71,7 +71,7 @@
 
       Proposition.prototype.saveneg = function(el) {
         var a;
-        a = _(this.get('negative')).clone();
+        a = this.get('negative');
         a.push(el);
         return this.save({
           negative: a
