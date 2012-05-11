@@ -22,10 +22,27 @@
 <body>
  
  
-<script type="text/javascript">
-  //your code goes here (or an external file if you choose)
-</script>
+  <script type="text/javascript">
+    //Define your user by initializing StackMob.User with your JSON.
+    var user = new StackMob.User({ username: 'Oz', password: 'Oz', profession:'admin'  });
  
+    //Creates the user and saves it to StackMob's database asynchronously
+    user.create();
+
+
+    user.login(false, {
+      success: function() {
+        //successful login!  no request body is returned.
+        //StackMob sets an encrypted cookie client side with the logged in information.
+        //On each request, StackMob decrypts the logged in information to make sure the request is valid.
+      },
+      error: function() {
+        //failed login attempt
+    //Let's logout a user
+    user.logout();  
+      }
+    });
+   </script>
 </body>
 </html>
 
