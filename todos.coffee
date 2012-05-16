@@ -136,7 +136,7 @@ $ ->
             abstain_votes = @model.get('abstain_votes')
             agv = " agree votes: <font color = \"green\">"  
             dgv = "</font>disagree votes: <font color = \"red\">" 
-            abv = "</font> abstain votes: <font color = \"yellow\""
+            abv = "</font> abstain votes: <font color = \"yellow\">"
             sop = "</font> <ul>supporting propositions:</ul>" 
             opp = "<ul>opposing propositions:</ul>" 
             this.$(@el).html( content + @template(@model.toJSON()) + agv + agree_votes + dgv + disagree_votes + abv + abstain_votes + sop + positivelist + opp + negativelist )
