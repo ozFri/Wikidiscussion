@@ -160,14 +160,19 @@
       };
 
       PropositionView.prototype.render = function() {
-        var abstain_votes, agree_votes, content, disagree_votes, negativelist, positivelist;
+        var abstain_votes, abv, agree_votes, agv, content, dgv, disagree_votes, negativelist, opp, positivelist, sop;
         content = "<div id=" + this.model.get('content') + "></div>";
         positivelist = "<ul>" + this.model.get('positive') + "</ul>";
         negativelist = "<ul>" + this.model.get('negative') + "</ul>";
         agree_votes = this.model.get('agree_votes');
         disagree_votes = this.model.get('disagree_votes');
         abstain_votes = this.model.get('abstain_votes');
-        this.$(this.el).html(content + this.template(this.model.toJSON()) + " agree votes: " + agree_votes + " disagree votes: " + disagree_votes + " abstain votes: " + abstain_votes + "<ul>supporting propositions:</ul>" + positivelist + "<ul>opposing propositions:</ul>" + negativelist);
+        agv = " agree votes: <font color = \"green\"";
+        dgv = " </font>disagree votes: <font color = \"red\">";
+        abv = " </font> abstain votes: <font color = \"yellow\"";
+        sop = "</font> <ul>supporting propositions:</ul>";
+        opp = "<ul>opposing propositions:</ul>";
+        this.$(this.el).html(content + this.template(this.model.toJSON()) + agv + agree_votes + dgv + disagree_votes + abv + abstain_votes + sop + positivelist + opp + negativelist);
         this.setContent();
         return this;
       };
